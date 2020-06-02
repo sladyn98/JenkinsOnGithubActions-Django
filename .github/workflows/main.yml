@@ -1,0 +1,23 @@
+name: JenkinsAction
+
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+  jenkinsfile-runner-prepackaged:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: jenkinsfile-runner-prepackaged
+      uses: jenkinsci/jenkinsfile-runner-github-actions/jenkinsfile-runner-prepackaged@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
